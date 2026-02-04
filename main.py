@@ -1,35 +1,21 @@
 
 
 
+
 # make this performance task ready for submission
 # To give the user a fun experience hearing knock knock jokes
 
 
 
-def robber():
+def tell_joke(setup, joked):
     input("Knock Knock ")
-    input("Calder")
-    print("Calder police - I've been robbed!")
-    joke = input("Do you want to hear another joke or are you finished? ")
-    if joke == "finished":
+    input(setup)
+    print(joked)
+    again = input("Do you want to hear another joke or are you finished? ")
+    if again == "finished":
         finished()
 
 
-def tank():
-    input("Knock Knock ")
-    input("Tank ")
-    print("You are welcome! ")
-    joke = input("Do you want to hear another joke or are you finished? ")
-    if joke == "finished":
-        finished()
-
-def pencil():
-    input("Knock Knock ")
-    input("Broken pencil ")
-    print("Nevermind, it's pointless! ")
-    joke = input("Do you want to hear another joke or are you finished? ")
-    if joke == "finished":
-        finished()
 
 def finished():
     num = int(input("Please rate our game 1-10! "))
@@ -44,28 +30,41 @@ def finished():
 
 name = input("Please enter your name: ")
 
-jokes = ["robber", "tank", "pencil"]
+jokes = [
+    {"name": "robber", "setup": "Calder ", "joked": "Calder police - I've been robbed!"},
+    {"name": "tank", "setup": "Tank", "joked": "You are welcome!"},
+    {"name": "pencil", "setup": "Broken pencil", "joked": "Nevermind, it's pointless!"},
+]
 
 
 
 
-joke = input("Do you want to hear a joke? ")
-if joke == "no":
+def choose_jokes(jokes):
+    while True:
+        print("\nAvailable joke types:")
+        for j in jokes:
+            print("- " + j['name'])
+        question = input("Which type would you like? ").strip().lower()
+        if question == 'none':
+            print("Goodbye!")
+            break
+        selected = next((j for j in jokes if j['name'] == question), None)
+        if selected:
+            tell_joke(selected['setup'], selected['joked'])
+            again = input("Hear another? (yes/no) ").strip().lower()
+            if again != 'yes':
+                break
+        else:
+            print("Sorry, I didn't recognize that choice.")
+    finished()
+
+
+start = input("Do you want to hear a joke? ")
+if start.strip().lower() == "no":
     print("Okay suit yourself!")
-elif joke == "yes":
+elif start.strip().lower() == "yes":
     print("Great, Let's Play")
-    print("Available joke types:")
-    for j in jokes:
-        print("- " + j)
-    question = input("Which type would you like? ('robber', 'tank', or 'pencil') ")
-    if question == "robber":
-        robber()
-    elif question == "tank":
-        tank()
-    elif question == "pencil":
-        pencil()
-    else:
-        print("Sorry, I didn't recognize that choice.")
+    choose_jokes(jokes)
 else:
     finished()
 
@@ -77,4 +76,3 @@ def end(name):
     exit()
 
 end(name)
-
