@@ -6,14 +6,12 @@
 # To give the user a fun experience hearing knock knock jokes
 
 
+name = input("Please enter your name: ")
 
 def tell_joke(setup, joked):
     input("Knock Knock ")
     input(setup)
     print(joked)
-    again = input("Do you want to hear another joke or are you finished? ")
-    if again == "finished":
-        finished()
 
 
 
@@ -28,12 +26,11 @@ def finished():
     else:
         print("Sorry you did not enjoy it. ")
 
-name = input("Please enter your name: ")
 
 jokes = [
     {"name": "robber", "setup": "Calder ", "joked": "Calder police - I've been robbed!"},
-    {"name": "tank", "setup": "Tank", "joked": "You are welcome!"},
-    {"name": "pencil", "setup": "Broken pencil", "joked": "Nevermind, it's pointless!"},
+    {"name": "tank", "setup": "Tank ", "joked": "You are welcome!"},
+    {"name": "pencil", "setup": "Broken pencil ", "joked": "Nevermind, it's pointless!"},
 ]
 
 
@@ -44,15 +41,19 @@ def choose_jokes(jokes):
         print("\nAvailable joke types:")
         for j in jokes:
             print("- " + j['name'])
-        question = input("Which type would you like? ").strip().lower()
+        question = input("Which type would you like? ( If you're done, type 'none') ").strip().lower()
         if question == 'none':
             print("Goodbye!")
             break
         selected = next((j for j in jokes if j['name'] == question), None)
         if selected:
             tell_joke(selected['setup'], selected['joked'])
-            again = input("Hear another? (yes/no) ").strip().lower()
-            if again != 'yes':
+            try:
+                jokes.remove(selected)
+            except ValueError:
+                pass
+            if not jokes:
+                print("No more jokes available.")
                 break
         else:
             print("Sorry, I didn't recognize that choice.")
